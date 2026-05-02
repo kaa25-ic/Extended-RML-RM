@@ -1,0 +1,27 @@
+env_name: random-objects
+host: 127.0.0.1
+port: 8081
+max_episode_steps : 200
+variables:
+    - name: x
+      type: float
+      location: obs
+      identifier: 0
+    - name: yy
+      type: float
+      location: obs
+      identifier: 1
+    - name: val
+      type: float
+      location: obs
+      identifier: 2
+    - name: objects_remaining
+      type: float
+      location: obs
+      identifier: 3  
+reward:
+      name: task
+      true: 100
+      currently_true: 100
+      currently_false: 0
+      false: -100

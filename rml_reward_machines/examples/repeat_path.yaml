@@ -1,0 +1,35 @@
+env_name: path-repeat
+host: 127.0.0.1
+port: 8081
+max_episode_steps : 100
+variables:
+    - name: start_x
+      type: float
+      location: obs
+      identifier: 0
+    - name: start_y 
+      type: float
+      location: obs
+      identifier: 1
+    - name: end_x
+      type: float
+      location: obs
+      identifier: 2
+    - name: end_y
+      type: float
+      location: obs
+      identifier: 3
+    - name: current_x
+      type: float
+      location: obs
+      identifier: 4
+    - name: current_y
+      type: float
+      location: obs
+      identifier: 5
+reward:
+      name: task
+      true: 100
+      currently_true: -1
+      currently_false: 0
+      false: -100

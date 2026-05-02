@@ -1,0 +1,13 @@
+a_match(n) matches {a : n} with n > 0;
+b_match matches {b : t} with t = 1.0;
+c_match matches {c : t} with t = 1.0;
+d_match matches {d : t} with t = 1.0;
+not_abcd not matches a_match(n) | b_match | c_match | d_match;
+
+Main = not_abcd* {let n; a_match(n) B<n>};
+
+B<n> = not_abcd* b_match C<n>;
+
+C<n> = not_abcd* c_match D<n>;
+
+D<n> = if (n > 0) not_abcd* d_match D<n-1> else all;

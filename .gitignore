@@ -1,0 +1,13 @@
+.DS_Store
+*.log
+*.tmp
+
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+SWI-Prolog.app/
+
+rml_reward_machines/.venv/
+rml_reward_machines/results/*.pkl

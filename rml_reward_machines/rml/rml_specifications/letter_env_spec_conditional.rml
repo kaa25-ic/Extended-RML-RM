@@ -1,0 +1,13 @@
+a_match matches {a : t} with t = 1.0;
+b_match matches {b : t} with t = 1.0;
+c_match matches {c : t} with t = 1.0;
+d_match matches {d : t} with t = 1.0;
+not_abcd not matches a_match | b_match | c_match | d_match;
+
+Main = not_abcd* A<0>;  
+
+A<n> = a_match not_abcd* (A<n+1> \/ B<n+1>);
+
+B<n> = b_match C<n>;
+
+C<n> = if (n < 2.5) not_abcd* c_match else not_abcd* d_match;
