@@ -1,0 +1,21 @@
+{
+  "encoding": "simple",
+  "total_conditions": 200,
+  "completed_conditions": 200,
+  "remaining_conditions": 0,
+  "current_iteration": null,
+  "current_n_value": null,
+  "started_at_utc": "2026-05-02T22:49:33.619607+00:00",
+  "updated_at_utc": "2026-05-03T01:30:29.074888+00:00",
+  "elapsed_seconds": 9655.455001115799,
+  "current_condition_episodes": null,
+  "current_condition_steps": null,
+  "last_completed_condition": {
+    "iteration": 20,
+    "n_value": 10,
+    "episodes": 377,
+    "steps": 28546,
+    "seed": null,
+    "converged": true
+  }
+}

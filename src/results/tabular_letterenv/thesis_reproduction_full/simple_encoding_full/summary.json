@@ -1,0 +1,90 @@
+{
+  "row_count": 200,
+  "n_values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "overall_converged_fraction": 1.0,
+  "aggregate_by_n": {
+    "1": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 166.7,
+      "std_episodes": 22.777401080895952,
+      "mean_steps": 4607.45,
+      "std_steps": 534.8259974047635
+    },
+    "2": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 168.05,
+      "std_episodes": 40.035577927638315,
+      "mean_steps": 5691.35,
+      "std_steps": 1217.4858633676204
+    },
+    "3": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 184.5,
+      "std_episodes": 33.03861377237247,
+      "mean_steps": 7155.85,
+      "std_steps": 1229.2612934197514
+    },
+    "4": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 202.1,
+      "std_episodes": 33.44682346651174,
+      "mean_steps": 8476.55,
+      "std_steps": 1432.5019188468823
+    },
+    "5": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 217.55,
+      "std_episodes": 36.33521019617198,
+      "mean_steps": 10998.25,
+      "std_steps": 2532.1231382971882
+    },
+    "6": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 211.7,
+      "std_episodes": 32.17934119897423,
+      "mean_steps": 11612.25,
+      "std_steps": 2368.2912378970623
+    },
+    "7": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 207.75,
+      "std_episodes": 29.264099166043025,
+      "mean_steps": 11476.35,
+      "std_steps": 2266.436835100418
+    },
+    "8": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 248.95,
+      "std_episodes": 47.35554349809534,
+      "mean_steps": 15648.3,
+      "std_steps": 4331.170651221215
+    },
+    "9": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 275.2,
+      "std_episodes": 41.04217343172752,
+      "mean_steps": 20011.8,
+      "std_steps": 6036.543842299167
+    },
+    "10": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 275.85,
+      "std_episodes": 54.21095369019069,
+      "mean_steps": 20176.4,
+      "std_steps": 6520.8669086249565
+    }
+  },
+  "encoding": "simple",
+  "output_dir": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/tabular_letterenv/thesis_reproduction_full/simple_encoding_full"
+}

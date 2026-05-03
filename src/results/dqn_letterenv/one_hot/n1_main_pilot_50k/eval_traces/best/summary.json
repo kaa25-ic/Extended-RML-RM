@@ -1,0 +1,12 @@
+{
+  "evaluated_at_utc": "2026-05-03T01:48:02.876549+00:00",
+  "run_dir": "src/results/dqn_letterenv/one_hot/n1_main_pilot_50k",
+  "model_kind": "best",
+  "model_path": "src/results/dqn_letterenv/one_hot/n1_main_pilot_50k/best_model.zip",
+  "episodes": 3,
+  "success_count": 0,
+  "success_rate": 0.0,
+  "mean_total_reward": 10.0,
+  "mean_final_reward": 0.0,
+  "mean_step_count": 200.0
+}

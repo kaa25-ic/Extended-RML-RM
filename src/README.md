@@ -1,24 +1,30 @@
-# New Work Area
+# Source Code
 
-This folder is reserved for your original implementation.
+This directory contains the implementation developed for the current project.
+It is intentionally separated from the inherited baseline under `legacy/` so
+that new contributions can be identified unambiguously.
 
-Suggested use:
-
-- put new agents here, such as DQN-based variants
-- keep new training and evaluation utilities here
-- add wrappers around `legacy/` code only when needed
-- avoid editing inherited code unless a change is required for integration
-
-A reasonable future structure would be:
+## Directory Structure
 
 ```text
 src/
   agents/
-  envs/
+    dqn/
+  configs/
   experiments/
-  models/
+  results/
   utils/
 ```
 
-This separation makes it easier to explain which parts are inherited and which
-parts are your own contribution.
+## Scope
+
+The initial objective for this directory is the implementation of DQN-based
+experiments for `LetterEnv` using the same task and reward structure as the
+inherited thesis baseline, while evaluating the three monitor-state encoding
+variants discussed in that work.
+
+## Development Principle
+
+New implementation should be added to this directory wherever possible. Direct
+modification of code under `legacy/` should be limited to cases where
+integration requires it and should be documented clearly.

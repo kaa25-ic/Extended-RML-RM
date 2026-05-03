@@ -62,6 +62,9 @@ cd legacy
   `SWI-Prolog.app` bundle in `legacy/`.
 - `SWI-Prolog.app` is intentionally gitignored so the repository stays
   portable.
+- `legacy/RML/letter_env_spec_numerical_runtime_compatible.pl` is provided for
+  baseline reproduction under the current runtime. The inherited
+  `letter_env_spec_numerical.pl` is preserved unchanged as baseline material.
 - The inherited code still contains older Gym/Gymnasium compatibility quirks,
   so some warnings during resets and steps are expected until the wrappers are
   modernized.

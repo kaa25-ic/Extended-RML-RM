@@ -1,0 +1,27 @@
+{
+  "completed_at_utc": "2026-05-03T00:11:32.211172+00:00",
+  "encoding": "one_hot",
+  "n_value": 1,
+  "total_timesteps": 50000,
+  "seed": null,
+  "train_episodes_completed": 793,
+  "train_mean_return": -11.576292559899118,
+  "train_mean_length": 63.002522068095836,
+  "evaluation_count": 20,
+  "best_evaluation": {
+    "timesteps": 2500,
+    "episode_count": 1,
+    "mean_return": 10.0,
+    "std_return": 0.0,
+    "mean_length": 200.0,
+    "success_rate": 0.0,
+    "mean_final_reward": 0.0
+  },
+  "artifacts": {
+    "final_model": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_main_pilot_50k/model_final.zip",
+    "best_model": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_main_pilot_50k/best_model.zip",
+    "train_monitor": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_main_pilot_50k/train_monitor.csv",
+    "eval_monitor": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_main_pilot_50k/eval_monitor.csv",
+    "eval_metrics": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_main_pilot_50k/eval_metrics.csv"
+  }
+}

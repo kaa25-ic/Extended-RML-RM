@@ -1,0 +1,90 @@
+{
+  "row_count": 200,
+  "n_values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "overall_converged_fraction": 1.0,
+  "aggregate_by_n": {
+    "1": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 167.25,
+      "std_episodes": 37.48849823612571,
+      "mean_steps": 4690.2,
+      "std_steps": 811.5696273271938
+    },
+    "2": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 168.0,
+      "std_episodes": 50.48663189399745,
+      "mean_steps": 4882.8,
+      "std_steps": 1261.442095381314
+    },
+    "3": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 158.5,
+      "std_episodes": 34.607080200444535,
+      "mean_steps": 4739.6,
+      "std_steps": 961.1834060157303
+    },
+    "4": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 152.1,
+      "std_episodes": 31.652646018934973,
+      "mean_steps": 4861.75,
+      "std_steps": 1073.9307182029947
+    },
+    "5": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 142.85,
+      "std_episodes": 31.890868599020628,
+      "mean_steps": 4916.55,
+      "std_steps": 1125.5984841407703
+    },
+    "6": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 149.35,
+      "std_episodes": 39.61726265152604,
+      "mean_steps": 4892.4,
+      "std_steps": 1046.4044342413692
+    },
+    "7": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 151.35,
+      "std_episodes": 37.90682656197957,
+      "mean_steps": 5103.35,
+      "std_steps": 1208.0270806153312
+    },
+    "8": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 166.15,
+      "std_episodes": 41.856033017953344,
+      "mean_steps": 5818.85,
+      "std_steps": 1104.98978615189
+    },
+    "9": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 148.15,
+      "std_episodes": 42.58553158057323,
+      "mean_steps": 5389.2,
+      "std_steps": 1377.7885759433484
+    },
+    "10": {
+      "converged_fraction": 1.0,
+      "mean_episodes": 160.5,
+      "std_episodes": 37.70344811817614,
+      "mean_steps": 5777.3,
+      "std_steps": 1357.4772226450063
+    }
+  },
+  "encoding": "one_hot",
+  "output_dir": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/tabular_letterenv/thesis_reproduction_full/one_hot_encoding_full"
+}

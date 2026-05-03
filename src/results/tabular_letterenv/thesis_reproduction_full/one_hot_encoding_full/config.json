@@ -1,0 +1,53 @@
+{
+  "experiment": "letterenv_tabular_baseline_reproduction",
+  "encoding": "one_hot",
+  "config_path": "/var/folders/5q/3czvnrx53rj7m28pz74m031h0000gp/T/tmp.2FrTJmOU/letter_env.yaml",
+  "protocol": {
+    "environment_id": "letter-env",
+    "config_relative_path": "examples/letter_env.yaml",
+    "numerical_monitor_spec": "letter_env_spec_numerical_runtime_compatible.pl",
+    "monitor_launcher": "online_monitor_edit.sh",
+    "max_episode_steps": 200,
+    "iterations": 20,
+    "max_n": 10,
+    "epsilon": 0.4,
+    "alpha": 0.5,
+    "gamma": 0.9,
+    "epsilon_decay": 0.99,
+    "terminal_reward_targets": [
+      110,
+      112
+    ],
+    "success_window": 20,
+    "transition_bonus": 10
+  },
+  "run_parameters": {
+    "iterations": 20,
+    "max_n": 10,
+    "epsilon": 0.4,
+    "alpha": 0.5,
+    "gamma": 0.9,
+    "seed_base": null,
+    "max_episodes_per_condition": null
+  },
+  "environment": {
+    "environment_class": "ThesisFaithfulRMLGymOneHot",
+    "event_index_size": 20,
+    "compatibility_signature_count": 14,
+    "thesis_faithful_monitor_encoding": true
+  },
+  "legacy_dependencies": {
+    "python_root": "legacy/rml_reward_machines",
+    "monitor_root": "legacy/RML",
+    "monitor_launcher": "online_monitor_edit.sh",
+    "monitor_spec": "letter_env_spec_numerical_runtime_compatible.pl"
+  },
+  "convergence_rule": {
+    "type": "moving_average_terminal_reward",
+    "window_size": 20,
+    "target_rewards": [
+      110,
+      112
+    ]
+  }
+}
