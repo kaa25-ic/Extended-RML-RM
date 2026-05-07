@@ -1,4 +1,0 @@
-timesteps,episode_count,mean_return,std_return,mean_length,success_rate,mean_final_reward,mean_final_base_reward
-10000,1,50.0,0.0,200.0,0.0,0.0,0.0
-20000,2,0.0,0.0,200.0,0.0,0.0,0.0
-30000,3,0.0,0.0,200.0,0.0,0.0,0.0

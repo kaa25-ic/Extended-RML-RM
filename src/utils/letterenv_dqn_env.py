@@ -376,16 +376,37 @@ class MonitorProgressRewardWrapper(gym.Wrapper):
     def _current_raw_monitor_state(self) -> str | None:
         return getattr(self.env, "monitor_state_unencoded", None)
 
+    @staticmethod
+    def _terminal_progress_potential(terminated: bool, reward_before_wrapper: float) -> float | None:
+        if not terminated:
+            return None
+        if reward_before_wrapper > 0.0:
+            return 1000.0
+        if reward_before_wrapper < 0.0:
+            return -1000.0
+        return None
+
     def reset(self, **kwargs):
         observation, info = self.env.reset(**kwargs)
-        self._previous_raw_monitor_state = self._current_raw_monitor_state()
-        self._previous_progress_potential = _monitor_progress_potential(self._previous_raw_monitor_state)
+        # RMLGym leaves monitor_state_unencoded stale across reset(), so start
+        # progress tracking from a neutral baseline for each episode.
+        self._previous_raw_monitor_state = None
+        self._previous_progress_potential = 0.0
         return observation, info
 
     def step(self, action):
         observation, reward, terminated, truncated, info = self.env.step(action)
         current_raw_monitor_state = self._current_raw_monitor_state()
-        current_progress_potential = _monitor_progress_potential(current_raw_monitor_state)
+        reward_before_wrapper = float(reward)
+        terminal_progress_potential = self._terminal_progress_potential(
+            bool(terminated),
+            reward_before_wrapper,
+        )
+        current_progress_potential = (
+            terminal_progress_potential
+            if terminal_progress_potential is not None
+            else _monitor_progress_potential(current_raw_monitor_state)
+        )
 
         removed_transition_bonus = 0.0
         if (
@@ -404,7 +425,6 @@ class MonitorProgressRewardWrapper(gym.Wrapper):
         elif current_progress_potential < self._previous_progress_potential:
             applied_regression_penalty = self.regression_penalty
 
-        reward_before_wrapper = float(reward)
         shaped_reward = (
             reward_before_wrapper
             - removed_transition_bonus

@@ -45,7 +45,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--exploration-initial-eps", type=float, default=1.0)
     parser.add_argument("--exploration-final-eps", type=float, default=0.05)
     parser.add_argument("--eval-freq", type=int, default=2_500)
-    parser.add_argument("--n-eval-episodes", type=int, default=10)
+    parser.add_argument("--n-eval-episodes", type=int, default=20)
     parser.add_argument("--eval-seed-base", type=int, default=0)
     parser.add_argument(
         "--disable-fresh-verification",
