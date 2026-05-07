@@ -5,7 +5,10 @@ from __future__ import annotations
 import argparse
 import json
 from datetime import datetime, timezone
+import os
 from pathlib import Path
+import shlex
+import sys
 
 from src.agents.dqn.policies import LetterEnvDQNPolicyConfig
 from src.agents.dqn.trainer import LetterEnvDQNTrainingConfig, train_letterenv_dqn
@@ -19,6 +22,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--encoding", choices=SUPPORTED_ENCODINGS, default="one_hot")
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument(
+        "--eval-config",
+        type=Path,
+        default=None,
+        help="Optional second monitor config for isolated evaluation. Defaults to --config.",
+    )
     parser.add_argument("--n-value", type=int, default=1)
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--seed", type=int, default=None)
@@ -37,8 +46,37 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--exploration-final-eps", type=float, default=0.05)
     parser.add_argument("--eval-freq", type=int, default=2_500)
     parser.add_argument("--n-eval-episodes", type=int, default=10)
+    parser.add_argument("--eval-seed-base", type=int, default=0)
+    parser.add_argument(
+        "--disable-fresh-verification",
+        action="store_true",
+        help="Skip fresh-process checkpoint verification for faster pilot runs.",
+    )
     parser.add_argument("--disable-state-discovery-bonus", action="store_true")
     parser.add_argument("--state-discovery-bonus", type=float, default=2.0)
+    parser.add_argument(
+        "--monitor-progress-bonus",
+        type=float,
+        default=0.0,
+        help="Reward only forward monitor progress; recommended with --disable-state-discovery-bonus.",
+    )
+    parser.add_argument(
+        "--monitor-regression-penalty",
+        type=float,
+        default=0.0,
+        help="Penalty applied when the monitor moves to an earlier task phase.",
+    )
+    parser.add_argument(
+        "--neutralize-legacy-transition-bonus",
+        action="store_true",
+        help="Subtract the inherited +10 reward for arbitrary monitor-state changes before shaping.",
+    )
+    parser.add_argument(
+        "--legacy-transition-bonus",
+        type=float,
+        default=10.0,
+        help="Value to subtract when --neutralize-legacy-transition-bonus is enabled.",
+    )
     parser.add_argument("--step-penalty", type=float, default=0.0)
     parser.add_argument("--no-op-penalty", type=float, default=0.0)
     parser.add_argument("--simple-monitor-limit", type=int, default=256)
@@ -57,6 +95,18 @@ def resolve_output_directory(requested: Path | None, encoding: str, n_value: int
 
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return default_dqn_results_root() / encoding / f"n_{n_value}" / timestamp
+
+
+def build_invocation_metadata() -> dict[str, str]:
+    module_command = shlex.join([sys.executable, "-m", "src.experiments.train_letterenv_dqn", *sys.argv[1:]])
+    wrapper_command = os.environ.get("LETTERENV_DQN_WRAPPER_COMMAND")
+    preferred_command = wrapper_command or module_command
+    return {
+        "preferred_command": preferred_command,
+        "wrapper_command": wrapper_command or "",
+        "module_command": module_command,
+        "working_directory": str(Path.cwd()),
+    }
 
 
 def main() -> None:
@@ -81,8 +131,14 @@ def main() -> None:
         exploration_final_eps=args.exploration_final_eps,
         eval_freq=args.eval_freq,
         n_eval_episodes=args.n_eval_episodes,
+        eval_seed_base=args.eval_seed_base,
+        enable_fresh_verification=not args.disable_fresh_verification,
         add_state_discovery_bonus=not args.disable_state_discovery_bonus,
         state_discovery_bonus=args.state_discovery_bonus,
+        monitor_progress_bonus=args.monitor_progress_bonus,
+        monitor_regression_penalty=args.monitor_regression_penalty,
+        neutralize_legacy_transition_bonus=args.neutralize_legacy_transition_bonus,
+        legacy_transition_bonus=args.legacy_transition_bonus,
         step_penalty=args.step_penalty,
         no_op_penalty=args.no_op_penalty,
         simple_monitor_limit=args.simple_monitor_limit,
@@ -100,8 +156,10 @@ def main() -> None:
 
     summary = train_letterenv_dqn(
         config=training_config,
-        config_path=args.config,
+        train_config_path=args.config,
+        eval_config_path=args.eval_config,
         policy_config=policy_config,
+        invocation_metadata=build_invocation_metadata(),
     )
     print(json.dumps(summary, indent=2))
 

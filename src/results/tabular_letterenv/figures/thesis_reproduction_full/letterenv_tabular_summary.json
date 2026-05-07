@@ -1,0 +1,315 @@
+{
+  "runs": {
+    "simple": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/tabular_letterenv/thesis_reproduction_full/simple_encoding_full",
+    "one_hot": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/tabular_letterenv/thesis_reproduction_full/one_hot_encoding_full",
+    "numerical": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/tabular_letterenv/thesis_reproduction_full/numerical_encoding_full"
+  },
+  "encodings": {
+    "simple": [
+      {
+        "encoding": "simple",
+        "n_value": 1,
+        "mean_steps": 4607.45,
+        "std_steps": 534.8259974047635,
+        "mean_episodes": 166.7,
+        "std_episodes": 22.777401080895952,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 2,
+        "mean_steps": 5691.35,
+        "std_steps": 1217.4858633676204,
+        "mean_episodes": 168.05,
+        "std_episodes": 40.035577927638315,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 3,
+        "mean_steps": 7155.85,
+        "std_steps": 1229.2612934197514,
+        "mean_episodes": 184.5,
+        "std_episodes": 33.03861377237247,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 4,
+        "mean_steps": 8476.55,
+        "std_steps": 1432.5019188468823,
+        "mean_episodes": 202.1,
+        "std_episodes": 33.44682346651174,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 5,
+        "mean_steps": 10998.25,
+        "std_steps": 2532.1231382971882,
+        "mean_episodes": 217.55,
+        "std_episodes": 36.33521019617198,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 6,
+        "mean_steps": 11612.25,
+        "std_steps": 2368.2912378970623,
+        "mean_episodes": 211.7,
+        "std_episodes": 32.17934119897423,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 7,
+        "mean_steps": 11476.35,
+        "std_steps": 2266.436835100418,
+        "mean_episodes": 207.75,
+        "std_episodes": 29.264099166043025,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 8,
+        "mean_steps": 15648.3,
+        "std_steps": 4331.170651221215,
+        "mean_episodes": 248.95,
+        "std_episodes": 47.35554349809534,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 9,
+        "mean_steps": 20011.8,
+        "std_steps": 6036.543842299167,
+        "mean_episodes": 275.2,
+        "std_episodes": 41.04217343172752,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "simple",
+        "n_value": 10,
+        "mean_steps": 20176.4,
+        "std_steps": 6520.8669086249565,
+        "mean_episodes": 275.85,
+        "std_episodes": 54.21095369019069,
+        "converged_fraction": 1.0,
+        "count": 20
+      }
+    ],
+    "one_hot": [
+      {
+        "encoding": "one_hot",
+        "n_value": 1,
+        "mean_steps": 4690.2,
+        "std_steps": 811.5696273271938,
+        "mean_episodes": 167.25,
+        "std_episodes": 37.48849823612571,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 2,
+        "mean_steps": 4882.8,
+        "std_steps": 1261.442095381314,
+        "mean_episodes": 168.0,
+        "std_episodes": 50.48663189399745,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 3,
+        "mean_steps": 4739.6,
+        "std_steps": 961.1834060157303,
+        "mean_episodes": 158.5,
+        "std_episodes": 34.607080200444535,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 4,
+        "mean_steps": 4861.75,
+        "std_steps": 1073.9307182029947,
+        "mean_episodes": 152.1,
+        "std_episodes": 31.652646018934973,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 5,
+        "mean_steps": 4916.55,
+        "std_steps": 1125.5984841407703,
+        "mean_episodes": 142.85,
+        "std_episodes": 31.890868599020628,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 6,
+        "mean_steps": 4892.4,
+        "std_steps": 1046.4044342413692,
+        "mean_episodes": 149.35,
+        "std_episodes": 39.61726265152604,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 7,
+        "mean_steps": 5103.35,
+        "std_steps": 1208.0270806153312,
+        "mean_episodes": 151.35,
+        "std_episodes": 37.90682656197957,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 8,
+        "mean_steps": 5818.85,
+        "std_steps": 1104.98978615189,
+        "mean_episodes": 166.15,
+        "std_episodes": 41.856033017953344,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 9,
+        "mean_steps": 5389.2,
+        "std_steps": 1377.7885759433484,
+        "mean_episodes": 148.15,
+        "std_episodes": 42.58553158057323,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "one_hot",
+        "n_value": 10,
+        "mean_steps": 5777.3,
+        "std_steps": 1357.4772226450063,
+        "mean_episodes": 160.5,
+        "std_episodes": 37.70344811817614,
+        "converged_fraction": 1.0,
+        "count": 20
+      }
+    ],
+    "numerical": [
+      {
+        "encoding": "numerical",
+        "n_value": 1,
+        "mean_steps": 4471.35,
+        "std_steps": 918.4948706987971,
+        "mean_episodes": 155.0,
+        "std_episodes": 34.21549356651165,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 2,
+        "mean_steps": 4689.6,
+        "std_steps": 839.6191041180518,
+        "mean_episodes": 160.5,
+        "std_episodes": 35.43656303875984,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 3,
+        "mean_steps": 5767.45,
+        "std_steps": 1051.147062736704,
+        "mean_episodes": 184.75,
+        "std_episodes": 36.62905267680288,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 4,
+        "mean_steps": 5515.75,
+        "std_steps": 1258.9600817738424,
+        "mean_episodes": 169.25,
+        "std_episodes": 42.76081734485439,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 5,
+        "mean_steps": 5815.2,
+        "std_steps": 1315.7902036419027,
+        "mean_episodes": 174.9,
+        "std_episodes": 35.591993481680674,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 6,
+        "mean_steps": 6392.55,
+        "std_steps": 1339.7695501465914,
+        "mean_episodes": 186.3,
+        "std_episodes": 41.95128126768001,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 7,
+        "mean_steps": 6702.85,
+        "std_steps": 1562.6941887330356,
+        "mean_episodes": 182.2,
+        "std_episodes": 37.206988590854806,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 8,
+        "mean_steps": 6969.4,
+        "std_steps": 993.1543888036744,
+        "mean_episodes": 181.7,
+        "std_episodes": 30.418908593176056,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 9,
+        "mean_steps": 7414.05,
+        "std_steps": 1234.399225331902,
+        "mean_episodes": 186.6,
+        "std_episodes": 27.78560778532656,
+        "converged_fraction": 1.0,
+        "count": 20
+      },
+      {
+        "encoding": "numerical",
+        "n_value": 10,
+        "mean_steps": 8268.25,
+        "std_steps": 1723.1289236444265,
+        "mean_episodes": 212.45,
+        "std_episodes": 43.02728785317523,
+        "converged_fraction": 1.0,
+        "count": 20
+      }
+    ]
+  }
+}

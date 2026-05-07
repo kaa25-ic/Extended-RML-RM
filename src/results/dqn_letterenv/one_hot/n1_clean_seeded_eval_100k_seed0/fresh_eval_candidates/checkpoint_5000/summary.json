@@ -1,0 +1,14 @@
+{
+  "evaluated_at_utc": "2026-05-05T14:21:31.974133+00:00",
+  "run_dir": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_clean_seeded_eval_100k_seed0",
+  "model_kind": "best",
+  "model_path": "/Users/Khalid/Desktop/University/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_clean_seeded_eval_100k_seed0/candidate_models/checkpoint_5000.zip",
+  "episodes": 20,
+  "reseed_each_episode": false,
+  "success_count": 0,
+  "success_rate": 0.0,
+  "mean_total_reward": -30.0,
+  "mean_final_reward": -30.0,
+  "mean_final_base_reward": -30.0,
+  "mean_step_count": 3.0
+}

@@ -77,15 +77,38 @@ The current training entry points are:
 
 - `python -m src.experiments.train_letterenv_dqn`
 - `src/experiments/run_letterenv_dqn.sh`
+- `src/experiments/run_letterenv_dqn_one_hot_sweep_option_b.sh`
 - `python -m src.experiments.evaluate_letterenv_dqn_policy`
 - `src/experiments/run_letterenv_dqn_eval.sh`
 
 The shell launcher starts the inherited monitor automatically and uses the
 runtime-compatible numerical specification by default.
+For training runs, it now starts isolated monitor servers for training and
+evaluation on separate ports by default (`18081` and `18082`) to avoid
+cross-contaminating callback evaluation with the live training monitor state.
 
 The evaluation-trace runner records deterministic policy rollouts from a saved
 `best_model.zip` or `model_final.zip`, including step-by-step observations,
-actions, rewards, and raw monitor states.
+actions, rewards, and raw monitor states. By default it now mirrors the
+callback reset style: the first episode is seeded, then subsequent episodes use
+plain resets unless `--reseed-each-episode` is supplied.
+
+For a focused one-hot DQN hyperparameter sweep on `LetterEnv`, the repository
+also includes:
+
+- `src/experiments/run_letterenv_dqn_one_hot_sweep_option_b.sh`
+
+This launcher runs the reduced "option B" sweep for `n=1`, `seed=0`, and
+`20,000` timesteps while varying:
+
+- `exploration_fraction` in `{0.3, 0.5}`
+- `learning_starts` in `{500, 1000}`
+- `learning_rate` in `{0.0005, 0.001, 0.002}`
+- `batch_size` in `{32, 64}`
+
+The sweep uses `5,000`-step evaluation intervals, `5` evaluation episodes, the
+fast monitor launcher by default, and writes a `sweep_manifest.csv` alongside the
+per-run output directories.
 
 The first DQN implementation path is designed to:
 
@@ -114,6 +137,7 @@ Each experiment run should produce a self-contained output directory under
 `src/results/` containing:
 
 - `config.json`
+- `command.txt`
 - `train_metrics.csv`
 - `summary.json`
 - `eval_metrics.csv` where applicable

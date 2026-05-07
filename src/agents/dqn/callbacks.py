@@ -25,6 +25,15 @@ class EvaluationRecord:
     mean_final_base_reward: float
 
 
+@dataclass(frozen=True)
+class CandidateCheckpoint:
+    """Saved checkpoint that should be verified in a fresh process."""
+
+    timesteps: int
+    model_path: Path
+    record: EvaluationRecord
+
+
 class PeriodicEvaluationCallback(BaseCallback):
     """Evaluate a DQN policy at fixed timestep intervals."""
 
@@ -36,6 +45,7 @@ class PeriodicEvaluationCallback(BaseCallback):
         eval_freq: int,
         n_eval_episodes: int,
         success_reward_threshold: float,
+        eval_seed_base: int = 0,
     ) -> None:
         super().__init__(verbose=0)
         self.evaluation_env = evaluation_env
@@ -43,14 +53,17 @@ class PeriodicEvaluationCallback(BaseCallback):
         self.eval_freq = eval_freq
         self.n_eval_episodes = n_eval_episodes
         self.success_reward_threshold = success_reward_threshold
+        self.eval_seed_base = int(eval_seed_base)
         self.records: list[EvaluationRecord] = []
+        self.candidate_checkpoints: list[CandidateCheckpoint] = []
         self.best_success_rate = float("-inf")
         self.best_mean_return = float("-inf")
         self.metrics_path = self.output_dir / "eval_metrics.csv"
-        self.best_model_path = self.output_dir / "best_model"
+        self.candidate_dir = self.output_dir / "candidate_models"
 
     def _on_training_start(self) -> None:
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.candidate_dir.mkdir(parents=True, exist_ok=True)
         with self.metrics_path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=list(asdict(self._empty_record()).keys()))
             writer.writeheader()
@@ -76,7 +89,15 @@ class PeriodicEvaluationCallback(BaseCallback):
         ):
             self.best_success_rate = record.success_rate
             self.best_mean_return = record.mean_return
-            self.model.save(str(self.best_model_path))
+            candidate_path = self.candidate_dir / f"checkpoint_{int(self.num_timesteps)}"
+            self.model.save(str(candidate_path))
+            self.candidate_checkpoints.append(
+                CandidateCheckpoint(
+                    timesteps=int(self.num_timesteps),
+                    model_path=candidate_path.with_suffix(".zip"),
+                    record=record,
+                )
+            )
 
         return True
 
@@ -90,8 +111,10 @@ class PeriodicEvaluationCallback(BaseCallback):
         final_base_rewards: list[float] = []
         successes: list[float] = []
 
-        for _ in range(self.n_eval_episodes):
-            observation, _ = self.evaluation_env.reset()
+        for episode_index in range(self.n_eval_episodes):
+            # Reuse the same seeded evaluation episodes at every checkpoint so
+            # model selection compares policy quality instead of rollout noise.
+            observation, _ = self.evaluation_env.reset(seed=self.eval_seed_base + episode_index)
             terminated = False
             truncated = False
             episode_return = 0.0

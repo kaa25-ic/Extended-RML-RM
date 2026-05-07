@@ -21,9 +21,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-dir", type=Path, required=True, help="Completed DQN run directory.")
     parser.add_argument("--config", type=Path, required=True, help="Temporary YAML config path for the active monitor.")
     parser.add_argument("--model-kind", choices=("best", "final"), default="best")
+    parser.add_argument(
+        "--model-path",
+        type=Path,
+        default=None,
+        help="Optional explicit model artifact path. Overrides --model-kind resolution.",
+    )
     parser.add_argument("--episodes", type=int, default=3)
     parser.add_argument("--max-steps", type=int, default=200)
     parser.add_argument("--seed-base", type=int, default=0)
+    parser.add_argument(
+        "--reseed-each-episode",
+        action="store_true",
+        help="Reset every episode with a fresh explicit seed instead of using callback-style resets.",
+    )
     parser.add_argument("--output-dir", type=Path, default=None)
     return parser.parse_args()
 
@@ -51,7 +62,12 @@ def _load_run_config(run_dir: Path) -> dict[str, Any]:
     return json.loads(config_path.read_text(encoding="utf-8"))
 
 
-def _resolve_model_path(run_dir: Path, model_kind: str) -> Path:
+def _resolve_model_path(run_dir: Path, model_kind: str, explicit_model_path: Path | None) -> Path:
+    if explicit_model_path is not None:
+        path = explicit_model_path if explicit_model_path.is_absolute() else run_dir / explicit_model_path
+        if not path.exists():
+            raise FileNotFoundError(f"Unable to locate explicit model artifact: {path}")
+        return path
     filename = "best_model.zip" if model_kind == "best" else "model_final.zip"
     path = run_dir / filename
     if not path.exists():
@@ -84,22 +100,27 @@ def evaluate_policy(
     run_dir: Path,
     config_path: Path,
     model_kind: str,
+    model_path: Path | None,
     episodes: int,
     max_steps: int,
     seed_base: int,
+    reseed_each_episode: bool,
     output_dir: Path,
 ) -> dict[str, Any]:
     run_config = _load_run_config(run_dir)
-    model_path = _resolve_model_path(run_dir, model_kind)
+    resolved_model_path = _resolve_model_path(run_dir, model_kind, model_path)
     env_config = _extract_training_config(run_config, config_path)
     env = build_letterenv_dqn_env(env_config, evaluation=True)
-    model = DQN.load(str(model_path))
+    model = DQN.load(str(resolved_model_path))
 
     output_dir.mkdir(parents=True, exist_ok=True)
     traces: list[dict[str, Any]] = []
 
     for episode_index in range(episodes):
-        observation, _info = env.reset(seed=seed_base + episode_index)
+        if episode_index == 0 or reseed_each_episode:
+            observation, _info = env.reset(seed=seed_base + episode_index)
+        else:
+            observation, _info = env.reset()
         initial_observation = _to_python(observation)
         steps: list[dict[str, Any]] = []
         terminated = False
@@ -154,8 +175,9 @@ def evaluate_policy(
         "evaluated_at_utc": _utc_now(),
         "run_dir": str(run_dir),
         "model_kind": model_kind,
-        "model_path": str(model_path),
+        "model_path": str(resolved_model_path),
         "episodes": episodes,
+        "reseed_each_episode": reseed_each_episode,
         "success_count": sum(1 for trace in traces if trace["success"]),
         "success_rate": sum(1 for trace in traces if trace["success"]) / max(episodes, 1),
         "mean_total_reward": float(np.mean([trace["total_reward"] for trace in traces])) if traces else None,
@@ -177,9 +199,11 @@ def main() -> None:
         run_dir=args.run_dir,
         config_path=args.config,
         model_kind=args.model_kind,
+        model_path=args.model_path,
         episodes=args.episodes,
         max_steps=args.max_steps,
         seed_base=args.seed_base,
+        reseed_each_episode=args.reseed_each_episode,
         output_dir=output_dir,
     )
     print(json.dumps(summary, indent=2))

@@ -20,7 +20,10 @@ from src.utils.monitor_state_encoding import (
     encode_numerical_monitor_state,
     encode_one_hot_monitor_state,
     extract_events,
+    extract_numerical_values,
     normalize_monitor_state,
+    replace_numerical_parts,
+    split_top_level_factors,
 )
 from src.utils.letterenv_thesis_protocol import encoding_entry_point, load_monitor_state_catalogue
 
@@ -69,6 +72,10 @@ class LetterEnvDQNEnvConfig:
     n_value: int
     add_state_discovery_bonus: bool = False
     state_discovery_bonus: float = 2.0
+    monitor_progress_bonus: float = 0.0
+    monitor_regression_penalty: float = 0.0
+    neutralize_legacy_transition_bonus: bool = False
+    legacy_transition_bonus: float = 10.0
     step_penalty: float = 0.0
     no_op_penalty: float = 0.0
     simple_monitor_limit: int = 256
@@ -237,6 +244,48 @@ def _state_key(observation: dict[str, np.ndarray]) -> tuple[tuple[float, ...], t
     return position, monitor
 
 
+def _monitor_progress_potential(raw_monitor_state: str | None) -> float:
+    """Return a monotone-like progress score for LetterEnv monitor states.
+
+    The score is based on coarse task phases, not arbitrary monitor-state changes:
+    initial/counting < after B < after C < D countdown < accept.
+    """
+    if raw_monitor_state is None:
+        return 0.0
+
+    normalized_state = normalize_monitor_state(raw_monitor_state)
+    if normalized_state == "false_verdict":
+        return -1000.0
+    if normalized_state == "1":
+        return 1000.0
+
+    factors = [replace_numerical_parts(factor) for factor in split_top_level_factors(normalized_state)]
+    values: list[float] = []
+    for factor in split_top_level_factors(normalized_state):
+        factor_values = extract_numerical_values(factor)
+        if factor_values:
+            values.extend(factor_values)
+    primary_value = values[0] if values else 0.0
+
+    if any("star(not_abcd:eps)*((d_match:eps)*app(gen([n],),[{num}]))" in factor for factor in factors):
+        return 400.0 - primary_value
+    if any("(app(gen([n],),[{num}]),[=guarded(var(n)>0" in factor for factor in factors):
+        return 350.0 - primary_value
+    if any("star(not_abcd:eps)*((c_match:eps)*app(gen([n],),[{num}]))" in factor for factor in factors):
+        return 250.0 + primary_value
+    if any("app(gen([n],star(not_abcd:eps)*((c_match:eps)*app(,[var(n)]))),[{num}])" in factor for factor in factors):
+        return 150.0 + primary_value
+    if any("(star(not_abcd:eps)*app(,[{num}]))" in factor for factor in factors):
+        return primary_value
+    if any(
+        "star(not_abcd:eps)*(app(gen([n],),[{num}])\\/app(gen([n],(b_match:eps)*app(gen([n],star(not_abcd:eps)*((c_match:eps)*app(,[var(n)]))),[var(n)])),[{num}]))"
+        in factor
+        for factor in factors
+    ):
+        return 50.0 + primary_value
+    return 0.0
+
+
 class LetterEnvObservationAdapter(gym.ObservationWrapper):
     """Normalize inherited LetterEnv observations for SB3 DQN."""
 
@@ -302,6 +351,77 @@ class StateDiscoveryRewardWrapper(gym.Wrapper):
             reward += self.bonus
             self._seen_state_keys.add(key)
         return observation, reward, terminated, truncated, info
+
+
+class MonitorProgressRewardWrapper(gym.Wrapper):
+    """Reward only forward monitor progress instead of any monitor-state change."""
+
+    def __init__(
+        self,
+        env: gym.Env,
+        *,
+        progress_bonus: float,
+        regression_penalty: float,
+        neutralize_legacy_transition_bonus: bool,
+        legacy_transition_bonus: float,
+    ) -> None:
+        super().__init__(env)
+        self.progress_bonus = float(progress_bonus)
+        self.regression_penalty = float(regression_penalty)
+        self.neutralize_legacy_transition_bonus = bool(neutralize_legacy_transition_bonus)
+        self.legacy_transition_bonus = float(legacy_transition_bonus)
+        self._previous_raw_monitor_state: str | None = None
+        self._previous_progress_potential = 0.0
+
+    def _current_raw_monitor_state(self) -> str | None:
+        return getattr(self.env, "monitor_state_unencoded", None)
+
+    def reset(self, **kwargs):
+        observation, info = self.env.reset(**kwargs)
+        self._previous_raw_monitor_state = self._current_raw_monitor_state()
+        self._previous_progress_potential = _monitor_progress_potential(self._previous_raw_monitor_state)
+        return observation, info
+
+    def step(self, action):
+        observation, reward, terminated, truncated, info = self.env.step(action)
+        current_raw_monitor_state = self._current_raw_monitor_state()
+        current_progress_potential = _monitor_progress_potential(current_raw_monitor_state)
+
+        removed_transition_bonus = 0.0
+        if (
+            self.neutralize_legacy_transition_bonus
+            and self._previous_raw_monitor_state is not None
+            and current_raw_monitor_state is not None
+            and normalize_monitor_state(current_raw_monitor_state)
+            != normalize_monitor_state(self._previous_raw_monitor_state)
+        ):
+            removed_transition_bonus = self.legacy_transition_bonus
+
+        applied_bonus = 0.0
+        applied_regression_penalty = 0.0
+        if current_progress_potential > self._previous_progress_potential:
+            applied_bonus = self.progress_bonus
+        elif current_progress_potential < self._previous_progress_potential:
+            applied_regression_penalty = self.regression_penalty
+
+        reward_before_wrapper = float(reward)
+        shaped_reward = (
+            reward_before_wrapper
+            - removed_transition_bonus
+            + applied_bonus
+            + applied_regression_penalty
+        )
+        self._previous_raw_monitor_state = current_raw_monitor_state
+        self._previous_progress_potential = current_progress_potential
+
+        info = dict(info)
+        info.setdefault("base_reward", reward_before_wrapper)
+        info["neutralized_legacy_transition_bonus"] = -removed_transition_bonus
+        info["monitor_progress_bonus"] = applied_bonus
+        info["monitor_regression_penalty"] = applied_regression_penalty
+        info["reward_before_monitor_progress_bonus"] = reward_before_wrapper
+        info["shaped_reward"] = shaped_reward
+        return observation, shaped_reward, terminated, truncated, info
 
 
 class ActionPenaltyWrapper(gym.Wrapper):
@@ -492,6 +612,19 @@ def build_letterenv_dqn_env(
             adapted_env,
             step_penalty=config.step_penalty,
             no_op_penalty=config.no_op_penalty,
+        )
+
+    if (
+        config.monitor_progress_bonus != 0.0
+        or config.monitor_regression_penalty != 0.0
+        or config.neutralize_legacy_transition_bonus
+    ):
+        adapted_env = MonitorProgressRewardWrapper(
+            adapted_env,
+            progress_bonus=config.monitor_progress_bonus,
+            regression_penalty=config.monitor_regression_penalty,
+            neutralize_legacy_transition_bonus=config.neutralize_legacy_transition_bonus,
+            legacy_transition_bonus=config.legacy_transition_bonus,
         )
 
     if config.add_state_discovery_bonus and not evaluation:
