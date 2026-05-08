@@ -15,10 +15,6 @@ from gymnasium import spaces
 
 from src.utils.legacy_paths import code_root, ensure_legacy_python_path, legacy_python_root
 from src.utils.monitor_state_encoding import (
-    build_numerical_event_index,
-    build_one_hot_event_index,
-    encode_numerical_monitor_state,
-    encode_one_hot_monitor_state,
     extract_events,
     extract_numerical_values,
     normalize_monitor_state,
@@ -34,8 +30,7 @@ from rml.rmlgym import RMLGym, RMLGym_One_Hot, RMLGym_Simple  # type: ignore  # 
 from utils.encoding_functions import (  # type: ignore  # noqa: E402
     create_encoding,
     create_encoding_one_hot,
-    generate_events_and_index,
-    generate_events_and_index_one_hot,
+    extract_events as legacy_extract_events,
 )
 SUPPORTED_ENCODINGS = ("simple", "one_hot", "numerical")
 
@@ -115,7 +110,11 @@ def _build_catalogue_state_lookup(
     states_for_encoding = load_monitor_state_catalogue()
 
     if encoding == "one_hot":
-        _, event_index = generate_events_and_index_one_hot(states_for_encoding)
+        event_index: dict[str, int] = {}
+        for state in states_for_encoding.values():
+            for event in legacy_extract_events(state):
+                if event not in event_index:
+                    event_index[event] = len(event_index)
         state_lookup = {
             normalize_monitor_state(state): create_encoding_one_hot(state, event_index).astype(np.float32)
             for state in states_for_encoding.values()
@@ -148,7 +147,17 @@ def _build_catalogue_state_lookup(
         for runtime_signature, target_signature in runtime_aliases.items():
             signature_lookup[runtime_signature] = signature_lookup[target_signature].copy()
     elif encoding == "numerical":
-        _, event_index = generate_events_and_index(states_for_encoding)
+        event_index = {}
+        next_index = 0
+        for state in states_for_encoding.values():
+            for event in legacy_extract_events(state):
+                if event in event_index:
+                    continue
+                event_index[event] = next_index
+                next_index += 1
+                for extra_index in range(1, event.count("{num}")):
+                    event_index[event + "£ADDITIONAL£" * extra_index] = next_index
+                    next_index += 1
         state_lookup = {
             normalize_monitor_state(state): create_encoding(state, event_index).astype(np.float32)
             for state in states_for_encoding.values()

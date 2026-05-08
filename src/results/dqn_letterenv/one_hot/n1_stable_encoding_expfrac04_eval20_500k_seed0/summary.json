@@ -1,0 +1,89 @@
+{
+  "completed_at_utc": "2026-05-07T23:39:00.907302+00:00",
+  "encoding": "one_hot",
+  "n_value": 1,
+  "total_timesteps": 500000,
+  "seed": 0,
+  "train_episodes_completed": 20041,
+  "train_mean_return": 72.3357117908288,
+  "train_mean_length": 24.948355870465544,
+  "runtime_seconds": 498.9901152920029,
+  "timesteps_per_second": 1002.0238571407494,
+  "evaluation_count": 25,
+  "first_success_evaluation": {
+    "timesteps": 260000,
+    "episode_count": 13,
+    "mean_return": 140.0,
+    "std_return": 0.0,
+    "mean_length": 17.0,
+    "success_rate": 1.0,
+    "mean_final_reward": 110.0,
+    "mean_final_base_reward": 110.0
+  },
+  "first_full_success_evaluation": {
+    "timesteps": 260000,
+    "episode_count": 13,
+    "mean_return": 140.0,
+    "std_return": 0.0,
+    "mean_length": 17.0,
+    "success_rate": 1.0,
+    "mean_final_reward": 110.0,
+    "mean_final_base_reward": 110.0
+  },
+  "callback_best_evaluation": {
+    "timesteps": 260000,
+    "episode_count": 13,
+    "mean_return": 140.0,
+    "std_return": 0.0,
+    "mean_length": 17.0,
+    "success_rate": 1.0,
+    "mean_final_reward": 110.0,
+    "mean_final_base_reward": 110.0
+  },
+  "best_evaluation": {
+    "timesteps": 260000,
+    "episode_count": 13,
+    "mean_return": 140.0,
+    "std_return": 0.0,
+    "mean_length": 17.0,
+    "success_rate": 1.0,
+    "mean_final_reward": 110.0,
+    "mean_final_base_reward": 110.0
+  },
+  "final_evaluation": {
+    "timesteps": 500000,
+    "episode_count": 25,
+    "mean_return": 140.0,
+    "std_return": 0.0,
+    "mean_length": 17.0,
+    "success_rate": 1.0,
+    "mean_final_reward": 110.0,
+    "mean_final_base_reward": 110.0
+  },
+  "final_exploration_rate": 0.1,
+  "fresh_verification_enabled": false,
+  "fresh_verification_best_evaluation": null,
+  "fresh_verification_best_model_path": null,
+  "fresh_verification_results": [],
+  "monitor_diagnostics": {
+    "train_env": {
+      "unknown_monitor_signature_count": 0,
+      "unknown_monitor_state_count": 0
+    },
+    "eval_env": {
+      "unknown_monitor_signature_count": 0,
+      "unknown_monitor_state_count": 0
+    }
+  },
+  "artifacts": {
+    "final_model": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/model_final.zip",
+    "best_model": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/best_model.zip",
+    "command": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/command.txt",
+    "train_monitor": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/train_monitor.csv",
+    "eval_monitor": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/eval_monitor.csv",
+    "eval_metrics": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/eval_metrics.csv",
+    "monitor_diagnostics": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/monitor_diagnostics.json",
+    "train_monitor_config": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/monitor_train_config.yaml",
+    "eval_monitor_config": "/Users/khalid/Desktop/Final Project/Final Project Wiki/code/src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed0/monitor_eval_config.yaml"
+  }
+}

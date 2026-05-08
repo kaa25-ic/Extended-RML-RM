@@ -1,0 +1,38 @@
+{
+  "evaluated_at_utc": "2026-05-08T00:39:33.969048+00:00",
+  "run_dir": "src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed4",
+  "model_kind": "best",
+  "model_path": "src/results/dqn_letterenv/one_hot/n1_stable_encoding_expfrac04_eval20_500k_seed4/best_model.zip",
+  "trained_n_value": 1,
+  "eval_n_value": 9,
+  "episodes": 100,
+  "reseed_each_episode": true,
+  "success_count": 13,
+  "success_rate": 0.13,
+  "mean_total_reward": 44.3,
+  "mean_final_reward": 14.3,
+  "mean_final_base_reward": 14.3,
+  "mean_step_count": 176.21,
+  "sampled_n_values": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "sampled_n_success_rate": {
+    "1": 1.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0,
+    "8": 0.0,
+    "9": 0.0
+  }
+}

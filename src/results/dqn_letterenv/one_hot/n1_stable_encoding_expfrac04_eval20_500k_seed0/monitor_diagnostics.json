@@ -1,0 +1,14 @@
+{
+  "train_env": {
+    "unknown_monitor_signature_count": 0,
+    "unknown_monitor_state_count": 0,
+    "unknown_monitor_signatures": {},
+    "unknown_monitor_states": {}
+  },
+  "eval_env": {
+    "unknown_monitor_signature_count": 0,
+    "unknown_monitor_state_count": 0,
+    "unknown_monitor_signatures": {},
+    "unknown_monitor_states": {}
+  }
+}
